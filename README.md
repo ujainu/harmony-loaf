@@ -37,6 +37,9 @@
 
 ## 构建
 
+完整使用说明见 [docs/USAGE.md](docs/USAGE.md)。许可与第三方组件见
+[LICENSE](LICENSE) 与 [THIRD_PARTY.md](THIRD_PARTY.md)。
+
 ```bash
 export DEVECO_SDK_HOME="/Applications/DevEco-Studio.app/Contents/sdk"
 export PATH="/Applications/DevEco-Studio.app/Contents/tools/hvigor/bin:$PATH"

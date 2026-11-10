@@ -1,0 +1,125 @@
+# API 覆盖报告（对照官方 loaf / ofxLua 绑定）
+
+- 官方类：**105**
+- 官方包装函数：**5354**
+- 已实现：**91** 类
+- 兼容桩：**14** 类 + 425 个自由函数
+
+## 已实现
+
+- `BaseSoundPlayer`
+- `BaseSoundStream`
+- `BoundingBox`
+- `BoxPrimitive`
+- `Buffer`
+- `BufferObject`
+- `Camera`
+- `Color`
+- `ConePrimitive`
+- `CubeMap`
+- `CylinderPrimitive`
+- `DefaultColorTypeVector`
+- `DefaultNormalTypeVector`
+- `DefaultTexCoordTypeVector`
+- `DefaultVertexTypeVector`
+- `Directory`
+- `DoubleColor`
+- `DragInfo`
+- `EasyCam`
+- `Fbo`
+- `FboSettings`
+- `File`
+- `FileDialogResult`
+- `FilePath`
+- `FloatColor`
+- `FloatImage`
+- `FloatPixels`
+- `FloatVector`
+- `FpsCounter`
+- `HttpRequest`
+- `HttpResponse`
+- `IcoSpherePrimitive`
+- `Image`
+- `ImageLoadSettings`
+- `IndexTypeVector`
+- `IntMap`
+- `IntVector`
+- `Light`
+- `Material`
+- `MaterialSettings`
+- `Matrix3x3`
+- `Matrix4x4`
+- `MatrixStack`
+- `Mesh`
+- `MeshFace`
+- `MeshFaceVector`
+- `Node`
+- `Path`
+- `PathVector`
+- `Pixels`
+- `PlanePrimitive`
+- `Polyline`
+- `PolylineVector`
+- `Quaternion`
+- `Rectangle`
+- `ScopedMatrix`
+- `ScopedMatrixStyle`
+- `ScopedStyle`
+- `Shader`
+- `Shadow`
+- `ShortImage`
+- `ShortPixels`
+- `SoundDeviceVector`
+- `SoundPlayer`
+- `SoundStream`
+- `SoundStreamSettings`
+- `SpherePrimitive`
+- `StringMap`
+- `StringVector`
+- `Style`
+- `Texture`
+- `TextureData`
+- `TextureVector`
+- `Time`
+- `TouchEventArgs`
+- `TrueTypeFont`
+- `TrueTypeFontSettings`
+- `UCharVector`
+- `URLFileLoader`
+- `Unicode`
+- `Vbo`
+- `VboMesh`
+- `Vec2f`
+- `Vec3f`
+- `Vec4f`
+- `VideoDevice`
+- `VideoDeviceVector`
+- `VideoFormat`
+- `VideoPlayer`
+- `WindowSettings`
+- `Xml`
+
+## 兼容桩
+
+- `3dPrimitive`
+- `Arduino`
+- `ArduinoSupportedPinTypesMap`
+- `Firmata_Encoder_Data`
+- `Firmata_I2C_Data`
+- `Firmata_Serial_Data`
+- `Firmata_Stepper_Data`
+- `Serial`
+- `SerialDeviceInfo`
+- `SoundDevice`
+- `VideoGrabber`
+- `path`
+- `string`
+- `supportedPinTypes`
+
+## 说明
+
+- 未实现的 14 个类全部是硬件/设备集成或 SWIG 内部类型
+- VideoGrabber 需要 ArkTS 侧创建 Camera_Manager 并传入，配合摄像头权限与真机
+- Arduino/Firmata/Serial 需要真实串口硬件；SoundDevice 需要音频设备枚举接口
+- HttpRequest/HttpResponse 官方绑定只有 getId()，已按官方表面实现
+- 其余类均有真实语义（原生 C++ 或 Lua 实现）

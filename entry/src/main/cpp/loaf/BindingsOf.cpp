@@ -984,6 +984,15 @@ int l_setWindowTitle(lua_State *L) {
 	return 0;
 }
 
+int l_setWindowShape(lua_State *L) {
+	int width = (int)number(L, 1, 0.0f);
+	int height = (int)number(L, 2, 0.0f);
+	if(renderer() != nullptr && width > 0 && height > 0) {
+		renderer()->setDesignResolution(width, height);
+	}
+	return 0;
+}
+
 int l_noop(lua_State *L) {
 	return 0;
 }
@@ -1441,7 +1450,7 @@ void registerOfBindings(lua_State *L) {
 	setFunction(L, "getMouseX", l_getMouseX, table);
 	setFunction(L, "getMouseY", l_getMouseY, table);
 	setFunction(L, "setWindowTitle", l_setWindowTitle, table);
-	setFunction(L, "setWindowShape", l_noop, table);
+	setFunction(L, "setWindowShape", l_setWindowShape, table);
 	setFunction(L, "setWindowPosition", l_noop, table);
 	setFunction(L, "setFullscreen", l_noop, table);
 	setFunction(L, "toggleFullscreen", l_noop, table);

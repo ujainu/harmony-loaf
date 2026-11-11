@@ -39,7 +39,7 @@ export class ScriptStore {
   /// copies the bundled example tree from rawfile into the sandbox once
   static ensureExamples(context: common.UIAbilityContext): string {
     const root = ScriptStore.scriptsDir(context) + '/examples';
-    const marker = root + '/.complete6';
+    const marker = root + '/.complete7';
     if (fs.accessSync(marker)) {
       return root;
     }

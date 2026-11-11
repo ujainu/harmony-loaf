@@ -197,6 +197,7 @@ void Runtime::loadScript(const std::string &path) {
 //--------------------------------------------------------------
 void Runtime::loadScriptText(const std::string &name, const std::string &text, const std::string &directory) {
 	post([this, name, text, directory]() {
+		renderer.clearDesignResolution();
 		if(!lua.loadBuffer(text, name, directory)) {
 			return;
 		}
@@ -215,6 +216,7 @@ void Runtime::reloadScript() {
 		if(lua.path().empty()) {
 			return;
 		}
+		renderer.clearDesignResolution();
 		lua.reload();
 		scriptTimestamp = fileTimestamp(lua.path());
 		lastReportedError.clear();
@@ -246,6 +248,7 @@ void Runtime::queueClear() {
 //--------------------------------------------------------------
 void Runtime::clearNow() {
 	lua.clear();
+	renderer.clearDesignResolution();
 	env().background = Color{0, 0, 0, 1};
 	lastReportedError.clear();
 	emit("{\"type\":\"info\",\"message\":\"script cleared\"}");
@@ -699,6 +702,7 @@ void Runtime::loadNow(const std::string &path) {
 	// set the script directory before loading: setup() may query it
 	env().scriptPath = path;
 	env().scriptDir = scriptDirectory(path);
+	renderer.clearDesignResolution();
 	if(!lua.loadFile(path)) {
 		OH_LOG_Print(LOG_APP, LOG_ERROR, 0x0000, "loafcore",
 		             "failed to load %{public}s: %{public}s", path.c_str(), lua.error().c_str());

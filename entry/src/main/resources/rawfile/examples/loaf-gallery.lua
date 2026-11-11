@@ -35,7 +35,7 @@ local function inside(card, x, y)
 end
 
 local function backButton()
-	return 24, 24, 120, 44
+	return 24, 120, 120, 44
 end
 
 local function drawBack()

@@ -808,6 +808,12 @@ int l_reloadScript(lua_State *L) {
 	return 0;
 }
 
+int l_loadScript(lua_State *L) {
+	const char *path = luaL_checkstring(L, 1);
+	env().runtime->loadScript(path);
+	return 0;
+}
+
 int l_clearScript(lua_State *L) {
 	env().runtime->queueClear();
 	return 0;
@@ -1375,6 +1381,7 @@ void registerLoafBindings(lua_State *L) {
 	setFunction(L, table, "clearResolution", l_clearResolution);
 	setFunction(L, table, "getResolution", l_getResolution);
 	setFunction(L, table, "reloadScript", l_reloadScript);
+	setFunction(L, table, "loadScript", l_loadScript);
 	setFunction(L, table, "clearScript", l_clearScript);
 
 	setFunction(L, table, "setListenPort", l_setListenPort);

@@ -11,7 +11,8 @@ OpenHarmony / HarmonyOS PC 的全过程：工程怎么组织、代码改了哪�
 解释器、OHAudio 音频、AVPlayer 视频、NativeImage 外部纹理、OSC 网络通信。
 桌面端那一套 `of.*` / `loaf.*` / `osc.*` 脚本接口保持不变，脚本不需要修改。
 
-仓库地址：<https://github.com/ujainu/harmony-loaf>
+仓库地址：<https://gitcode.com/OpenHarmonyPCDeveloper/ohos_loaf>
+（GitHub 镜像：<https://github.com/ujainu/harmony-loaf>）
 
 ---
 
@@ -32,7 +33,7 @@ OpenHarmony / HarmonyOS PC 的全过程：工程怎么组织、代码改了哪�
 ## 工程结构
 
 ```text
-harmony-loaf/
+ohos_loaf/
 ├── AppScope/                     # 应用级配置与图标
 ├── entry/                        # 主模块
 │   ├── src/main/cpp/
@@ -87,8 +88,8 @@ OHAudio、AVPlayer、UDP socket 重新实现同样的能力，再通过 NAPI 和
 ### 1. 拉代码
 
 ```bash
-git clone https://github.com/ujainu/harmony-loaf.git
-cd harmony-loaf
+git clone https://gitcode.com/OpenHarmonyPCDeveloper/ohos_loaf.git
+cd ohos_loaf
 ```
 
 ### 2. 命令行构建

@@ -1,8 +1,25 @@
-# loaf for HarmonyOS PC
+# ohos_loaf · loaf for HarmonyOS PC
 
 把 [loaf](https://github.com/danomatika/loaf)（Lua + OSC + openFrameworks 的实时编码
 运行时）移植到鸿蒙 PC（2in1）。openFrameworks 没有鸿蒙后端，因此这里用鸿蒙原生能力
 重建了运行时，并保持 loaf 的脚本接口不变。
+
+ohos_loaf 将 loaf 迁移到 OpenHarmony / HarmonyOS PC，用 XComponent + EGL +
+OpenGL ES 3.0 重建渲染层，内嵌 Lua 5.4，并实现 FBO、GLSL ES 着色器、3D、
+OHAudio 音频、AVPlayer + NativeImage 视频、OSC 收发、串口/Firmata、摄像头桥接
+与 TCP 帧服务。支持拖拽导入、保存即热重载、错误浮层与示例库，现有 loaf 脚本无需
+改代码即可运行，面向实时视觉、互动装置与教学场景。
+
+技术栈：ArkTS/ArkUI + C++/NAPI + EGL/GLES3 + Lua 5.4 + OHAudio + AVPlayer +
+CMake/Hvigor。
+
+开源动机：补齐鸿蒙在创意编码与实时脚本工具上的生态空缺，并把适配经验回馈给
+openFrameworks / loaf 社区。
+
+社区计划：持续补齐上游 ofxLua 绑定、维护示例与文档、接受 issue/PR、跟随上游版本更新。
+
+仓库地址：[GitCode](https://gitcode.com/OpenHarmonyPCDeveloper/ohos_loaf) ·
+[GitHub](https://github.com/ujainu/harmony-loaf)
 
 ```
 ┌────────────────────────── ArkUI (Index.ets) ──────────────────────────────┐
@@ -14,19 +31,6 @@
 ```
 
 ## 目录
-
-## 迁移能力（T0 / T1 / T2）
-
-按鸿蒙 PC 适配规范，能力分为三档：
-
-| 阶段 | 范围 | 状态 |
-| --- | --- | --- |
-| **T0 基础能力** | 构建 HAP、安装启动、画布渲染、脚本加载、热重载、错误处理 | 完成（100%） |
-| **T1 主要能力** | 2D 绘图、字体、图片、FBO、着色器、OSC、音频播放、鼠标键盘、拖拽导入、官方示例 | 可用（约 95%） |
-| **T2 增强能力** | 3D、实时音频、视频、帧服务、XML、launcher、导出、适配缩放、自测、摄像头桥接、串口/Firmata | 可用（约 90%，硬件相关需真机验证） |
-
-完整的适配过程、编译运行步骤与逐项状态见
-[README.OpenHarmony_CN.md](README.OpenHarmony_CN.md)。
 
 | 路径 | 说明 |
 | --- | --- |
@@ -47,6 +51,19 @@
 | `entry/src/main/ets/loaf/ScriptStore.ets` | 脚本/文件夹导入、示例库解包 |
 | `entry/src/main/resources/rawfile/examples` | loaf 官方示例（原样收录） |
 | `entry/src/main/resources/rawfile/selftest.lua` | 137 项接口自测 |
+
+## 迁移能力（T0 / T1 / T2）
+
+按鸿蒙 PC 适配规范，能力分为三档：
+
+| 阶段 | 范围 | 状态 |
+| --- | --- | --- |
+| **T0 基础能力** | 构建 HAP、安装启动、画布渲染、脚本加载、热重载、错误处理 | 完成（100%） |
+| **T1 主要能力** | 2D 绘图、字体、图片、FBO、着色器、OSC、音频播放、鼠标键盘、拖拽导入、官方示例 | 可用（约 95%） |
+| **T2 增强能力** | 3D、实时音频、视频、帧服务、XML、launcher、导出、适配缩放、自测、摄像头桥接、串口/Firmata | 可用（约 90%，硬件相关需真机验证） |
+
+完整的适配过程、编译运行步骤与逐项状态见
+[README.OpenHarmony_CN.md](README.OpenHarmony_CN.md)。
 
 ## 构建
 

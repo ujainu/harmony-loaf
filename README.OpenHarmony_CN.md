@@ -53,7 +53,7 @@ harmony-loaf/
 │   ├── src/main/ets/             # ArkUI 壳层（工具栏、文件选择、CameraBridge）
 │   └── src/main/resources/
 │       ├── rawfile/examples/     # loaf 官方示例
-│       └── rawfile/selftest.lua  # 132 项自测
+│       └── rawfile/selftest.lua  # 137 项自测
 ├── docs/                         # 使用文档与 API 覆盖
 └── README.md                     # 项目总览
 ```
@@ -289,7 +289,7 @@ end
 | launcher 脚本 | 能用 | 点击卡片通过 `/loaf/load` 切换示例 |
 | 导出脚本 | 能用 | 系统保存对话框导出到桌面/文档 |
 | 适配缩放 | 能用 | 锁定逻辑尺寸，窗口变化时等比缩放 |
-| 自测 | 能用 | 132 项断言全部通过 |
+| 自测 | 能用 | 137 项断言全部通过 |
 | 摄像头（VideoGrabber） | 部分能用 | 原生创建 NativeImage 表面，ArkTS 侧用 `@kit.CameraKit` 启动预览；需要摄像头权限与真机 |
 | Arduino / Firmata / Serial | 部分能用 | 已实现 POSIX 串口、Firmata 数字/模拟/PWM 与回调；需要真实串口硬件验证 |
 | SoundDevice 枚举 | 能用 | 通过 OHAudio RoutingManager 列出输入/输出设备 |
@@ -311,7 +311,7 @@ end
   4 项需真机或协议限制），addons 不在官方 loaf 范围内，**约 90%**。
 
 官方绑定的 105 个类中，**102 个有真实语义**；剩余 3 个是 SWIG 内部类型
-（`path`/`string`）和一个无 Lua 名字的基类，清单在 `docs/API_COVERAGE.md`。自测 132 项全部通过，
+（`path`/`string`）和一个无 Lua 名字的基类，清单在 `docs/API_COVERAGE.md`。自测 137 项全部通过，
 覆盖渲染、FBO、着色器、字体、音频、3D、OSC、文件、帧服务与兼容层。
 
 **一句话总结**：loaf 的核心工作流——写脚本、保存、立刻看到画面、用 OSC

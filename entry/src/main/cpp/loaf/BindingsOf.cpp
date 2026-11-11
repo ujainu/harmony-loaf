@@ -1324,6 +1324,8 @@ void registerFboMetatable(lua_State *L) {
 	lua_setfield(L, -2, "allocate");
 	lua_pushcfunction(L, l_fbo_begin);
 	lua_setfield(L, -2, "begin");
+	lua_pushcfunction(L, l_fbo_begin);
+	lua_setfield(L, -2, "beginFbo");
 	lua_pushcfunction(L, l_fbo_end);
 	lua_setfield(L, -2, "end");
 	lua_pushcfunction(L, l_fbo_end);

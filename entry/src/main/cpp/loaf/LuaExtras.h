@@ -696,4 +696,82 @@ of.Firmata_Stepper_Data = dataClass({steps = 0, direction = 0})
 of.ArduinoSupportedPinTypesMap = {}
 of.supportedPinTypes = {}
 of.VideoFormat = {RGB = 0, YUV = 1, GRAY = 2}
+
+-- official ofxLua sets of.Point to of.Vec3f
+of.Point = ofVec3f
+
+-- class helper from ofxLua (Lua Users wiki simple classes)
+function class(base, __init)
+    local c = {}
+    if not __init and type(base) == 'function' then
+        __init = base
+        base = nil
+    elseif type(base) == 'table' then
+        for i, v in pairs(base) do c[i] = v end
+        c._base = base
+    end
+    c.__index = c
+    local mt = {}
+    mt.__call = function(class_tbl, ...)
+        local obj = {}
+        setmetatable(obj, c)
+        if class_tbl.__init then
+            class_tbl.__init(obj, ...)
+        elseif base and base.__init then
+            base.__init(obj, ...)
+        end
+        return obj
+    end
+    c.__init = __init
+    c.is_a = function(self, klass)
+        local m = getmetatable(self)
+        while m do
+            if m == klass then return true end
+            m = m._base
+        end
+        return false
+    end
+    setmetatable(c, mt)
+    return c
+end
+
+-- vector rotation, matching both ofVec3f and older Lua examples
+--   v:rotate(degrees)                -> rotate around z
+--   v:rotate(0, 0, degrees)          -> legacy dragon-curve z rotation
+--   v:rotate(degrees, axis)          -> rotate around a vector
+--   v:rotate(degrees, x, y, z)       -> official ofVec3f axis rotation
+local function vectorRotate(self, a, b, c, d)
+    local degrees, ax, ay, az
+    if d ~= nil then
+        degrees, ax, ay, az = a, b, c, d
+    elseif type(b) == "table" then
+        degrees, ax, ay, az = a, b.x or 0, b.y or 0, b.z or 1
+    elseif c ~= nil then
+        degrees, ax, ay, az = c, 0, 0, 1
+    else
+        degrees, ax, ay, az = a or 0, 0, 0, 1
+    end
+
+    local len = math.sqrt(ax * ax + ay * ay + az * az)
+    if len <= 0 then return self end
+    local ux, uy, uz = ax / len, ay / len, az / len
+    local vx, vy, vz = self.x or 0, self.y or 0, self.z or 0
+    local rad = math.rad(degrees or 0)
+    local cs, sn = math.cos(rad), math.sin(rad)
+    local dot = vx * ux + vy * uy + vz * uz
+    local cx = uy * vz - uz * vy
+    local cy = uz * vx - ux * vz
+    local cz = ux * vy - uy * vx
+    local keepZ = self.z ~= nil
+    self.x = vx * cs + cx * sn + ux * dot * (1 - cs)
+    self.y = vy * cs + cy * sn + uy * dot * (1 - cs)
+    if keepZ then
+        self.z = vz * cs + cz * sn + uz * dot * (1 - cs)
+    end
+    return self
+end
+for _, vec in ipairs({ ofVec2f, ofVec3f, ofVec4f }) do
+    local methods = getmetatable(vec).__index
+    methods.rotate = vectorRotate
+end
 )LOAFEXTRAS";

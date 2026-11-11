@@ -11,9 +11,9 @@
 ## 已验证
 
 - `hvigorw clean assembleHap` 通过，安装启动正常
-- 官方示例：graphics / polygon / fonts / imageLoader / osc / fileutils /
-  callbacks / window 均可运行
-- `selftest.lua` 132 项全部通过
+- 官方示例：graphics / polygon / dragoncurve / fonts / imageLoader / osc /
+  fileutils / callbacks / window 均可运行；launcher 的六张卡片可切换脚本
+- `selftest.lua` 137 项全部通过
 - 音频：WAV 解码 → 44.1kHz 立体声混音输出，位置/结束状态正确
 - 3D：透视相机、深度遮挡、Mesh、Box/Sphere/Cone/Cylinder/Plane、
   FBO 像素断言

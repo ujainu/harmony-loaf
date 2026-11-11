@@ -46,7 +46,7 @@
 | `entry/src/main/cpp/third_party/lua` | Lua 5.4（来自 `loaf/src_ofxLua/libs/lua`） |
 | `entry/src/main/ets/loaf/ScriptStore.ets` | 脚本/文件夹导入、示例库解包 |
 | `entry/src/main/resources/rawfile/examples` | loaf 官方示例（原样收录） |
-| `entry/src/main/resources/rawfile/selftest.lua` | 128 项接口自测 |
+| `entry/src/main/resources/rawfile/selftest.lua` | 137 项接口自测 |
 
 ## 构建
 
@@ -169,11 +169,12 @@ distSquared toString toInt toFloat degToRad radToDeg sendMessage` 与
 - 触摸/鼠标/键盘事件到达脚本（逻辑坐标换算正确）
 - 音频：脚本内生成 22050Hz 单声道 WAV，加载、重采样、播放、音量、结束状态均验证
 - OSC 回环收发、消息全类型、bundle、手动 Receiver 正常
-- 官方示例 `graphicsExample` `polygonExample` `fontsExample`
+- 官方示例 `graphicsExample` `polygonExample` `dragoncurve` `fontsExample`
   `imageLoaderExample` `osc.lua` `fileutils.lua` `callbacks.lua` `window.lua`
-  均可运行；`selftest.lua` 128 项全部通过（含 FBO、着色器、ParameterSync、TTF、
+  均可运行；`launcher.lua` 的六张卡片也能通过 OSC 切换脚本；
+  `selftest.lua` 137 项全部通过（含 FBO、着色器、ParameterSync、TTF、
   音频、视频接口、3D、帧服务、Pixels/Texture/Polyline/Path、Rectangle/Node/
-  Material/Light/图元、Vec2f/3f、Color、兼容层）
+  Material/Light/图元、Vec2f/3f、向量旋转、class 助手、Color、兼容层）
 
 ## API 覆盖
 

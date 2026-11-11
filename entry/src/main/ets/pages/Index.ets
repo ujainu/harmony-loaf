@@ -51,6 +51,11 @@ struct Index {
     }, 1000);
 
     setTimeout(() => {
+      try {
+        ScriptStore.ensureExamples(this.context);
+      } catch (err) {
+        console.error('loaf: examples unpack failed', JSON.stringify(err));
+      }
       this.syncFromRuntime();
       const demo: string = ScriptStore.demoPath(this.context);
       if (this.scriptName === '未载入脚本' && demo.length > 0) {
@@ -193,7 +198,7 @@ struct Index {
         this.errorText = '当前没有可导出的脚本';
         return;
       }
-      const saved = await ScriptStore.exportScript(this.context, demo, 'launcher.lua');
+      const saved = await ScriptStore.exportScript(this.context, demo, 'loaf-gallery.lua');
       this.status = saved ? '已导出脚本' : '已取消导出';
     } catch (err) {
       this.errorText = `导出失败: ${JSON.stringify(err)}`;
@@ -521,15 +526,18 @@ struct Index {
       .width('100%')
 
       this.ExampleRow('动画 demo', 'loaf 内置实时演示', 'demo.lua')
+      this.ExampleRow('启动器 launcher', '六张示例卡片与拖拽入口', 'launcher.lua')
+      this.ExampleRow('双模块 gallery', '旋转三角体 / 跳舞女孩', 'loaf-gallery.lua')
       this.ExampleRow('图形 graphics', '形状、颜色、变换、曲线', 'of/graphicsExample.lua')
       this.ExampleRow('多边形 polygon', 'beginShape / vertex / 两种绕数', 'of/polygonExample.lua')
+      this.ExampleRow('龙形曲线 dragon', 'FBO、点运算与迭代绘制', 'dragoncurve.lua')
       this.ExampleRow('字体 fonts', 'TrueTypeFont 与文本绘制', 'of/fontsExample.lua')
       this.ExampleRow('图片 imageLoader', '加载 png/jpg/gif 并绘制', 'of/imageLoaderExample.lua')
       this.ExampleRow('OSC 测试', '消息类型、bundle、收发', 'tests/osc.lua')
       this.ExampleRow('文件工具', 'of.File / Directory / Buffer', 'tests/fileutils.lua')
       this.ExampleRow('回调 callbacks', '鼠标键盘窗口事件', 'tests/callbacks.lua')
       this.ExampleRow('窗口 window', '窗口与帧率控制', 'tests/window.lua')
-      this.ExampleRow('自测 selftest', '41 项接口回归', 'selftest.lua')
+      this.ExampleRow('自测 selftest', '全部接口回归', 'selftest.lua')
     }
     .alignItems(HorizontalAlign.Start)
     .width(560)

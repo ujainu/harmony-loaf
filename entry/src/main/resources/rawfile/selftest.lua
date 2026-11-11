@@ -92,7 +92,7 @@ check("sync handle", sync:handle(incoming) == true and sync:get("/count") == 9)
 -- framebuffer
 local fbo = of.Fbo()
 check("fbo alloc", fbo:allocate(64, 64) and fbo:isAllocated())
-fbo:begin()
+fbo:beginFbo()
 of.background(10, 200, 30)
 fbo:endFbo()
 local fboPixel = fbo:getPixel(32, 32)
@@ -325,6 +325,15 @@ check("cylinder draw", primPixel.r > 40 or primPixel.g > 40,
 -- vectors / color
 local v2 = ofVec2f(3, 4)
 check("vec2 length", math.abs(v2:length() - 5) < 1e-6, v2:length())
+check("point alias", of.Point == of.Vec3f)
+local pointRotation = of.Point(0, -10)
+pointRotation:rotate(0, 0, 90)
+check("point rotate", math.abs(pointRotation.x - 10) < 1e-6 and
+	math.abs(pointRotation.y) < 1e-6, tostring(pointRotation))
+local axisRotation = of.Vec3f(0, -10, 0)
+axisRotation:rotate(90, 0, 0, 1)
+check("vec3 axis rotate", math.abs(axisRotation.x - 10) < 1e-6 and
+	math.abs(axisRotation.y) < 1e-6, tostring(axisRotation))
 local sum = ofVec2f(1, 2) + ofVec2f(3, 4)
 check("vec2 add", sum.x == 4 and sum.y == 6)
 check("vec2 mul", (ofVec2f(2, 3) * 2).x == 4)
@@ -335,6 +344,19 @@ check("vec3 dot", dot == 0)
 local color2 = of.Color(255, 128, 0)
 check("color ctor", color2.r == 255 and color2.g == 128)
 check("color hex", color2:getHex() == 0xFF8000, color2:getHex())
+
+-- ofxLua class helper used by polygonExample.lua
+local TestVertex = class()
+function TestVertex:__init(x, y)
+	self.x = x
+	self.y = y
+end
+function TestVertex:sum()
+	return self.x + self.y
+end
+local testVertex = TestVertex(7, 8)
+check("class ctor", testVertex.x == 7 and testVertex.y == 8)
+check("class method", testVertex:sum() == 15, testVertex:sum())
 
 -- containers / matrix / quaternion
 local vec = ofFloatVector()

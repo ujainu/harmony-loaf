@@ -39,7 +39,7 @@ export class ScriptStore {
   /// copies the bundled example tree from rawfile into the sandbox once
   static ensureExamples(context: common.UIAbilityContext): string {
     const root = ScriptStore.scriptsDir(context) + '/examples';
-    const marker = root + '/.complete2';
+    const marker = root + '/.complete6';
     if (fs.accessSync(marker)) {
       return root;
     }
@@ -53,7 +53,8 @@ export class ScriptStore {
       'examples/of',
       'examples/of/images',
       'examples/of/fonts',
-      'examples/video'
+      'examples/video',
+      'examples/dance'
     ];
     for (const rawDir of directories) {
       const targetDir = ScriptStore.scriptsDir(context) + '/' + rawDir;

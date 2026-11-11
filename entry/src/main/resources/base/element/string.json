@@ -11,6 +11,10 @@
     {
       "name": "EntryAbility_label",
       "value": "loaf"
+    },
+    {
+      "name": "camera_reason",
+      "value": "用于 ofVideoGrabber 摄像头预览"
     }
   ]
 }

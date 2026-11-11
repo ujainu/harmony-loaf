@@ -5,6 +5,7 @@
 #include "LuaExtras.h"
 #include "AudioStream.h"
 #include "BindingsAudioStream.h"
+#include "BindingsHardware.h"
 #include "../Log.h"
 
 #include <unistd.h>
@@ -449,6 +450,13 @@ bool LuaVM::callAudioOut(SoundStream &stream) {
 	stream.submit(result != nullptr ? *result : block);
 	lua_pop(L, 1);
 	return true;
+}
+
+//--------------------------------------------------------------
+void LuaVM::pollHardware() {
+	if(L != nullptr) {
+		pollSerialDevices(L);
+	}
 }
 
 //--------------------------------------------------------------

@@ -6,14 +6,14 @@
   帧服务均已落地，并在 HarmonyOS 6.1.1（API 24）2in1 模拟器上验证。
 - 官方 ofxLua 绑定的**接口面已全部对齐**：105 个类名、425 个自由函数都存在，
   脚本不会因缺类/缺函数直接中断。
-- **已实现 91 个类**；其余 14 个为硬件/设备类或 SWIG 内部类型。
+- **已实现 102 个类**；其余 3 个为 SWIG 内部类型或无 Lua 名字的基类。
 
 ## 已验证
 
 - `hvigorw clean assembleHap` 通过，安装启动正常
 - 官方示例：graphics / polygon / fonts / imageLoader / osc / fileutils /
   callbacks / window 均可运行
-- `selftest.lua` 128 项全部通过
+- `selftest.lua` 132 项全部通过
 - 音频：WAV 解码 → 44.1kHz 立体声混音输出，位置/结束状态正确
 - 3D：透视相机、深度遮挡、Mesh、Box/Sphere/Cone/Cylinder/Plane、
   FBO 像素断言
@@ -32,15 +32,14 @@ Matrix4x4, Quaternion
 SoundStream（Lua audioOut 回调 + 缓冲水位控制）
 IcoSpherePrimitive, CubeMap（加载 + 天空盒）, BufferObject
 
-## 未实现（15 个 compat 桩）
+## 未实现（3 个 compat 桩）
 
-主要是：
+- `3dPrimitive`：基类，Lua 中没有有效标识符
+- `path` / `string`：SWIG 为 std::string / std::filesystem::path 生成的内部代理类型
 
-- 采集：VideoGrabber（需 ArkTS 传入 Camera_Manager）、SoundDevice
-- 网络：HttpRequest、HttpResponse
-- 硬件：Arduino、Firmata 系列
-- 数据容器/工具：各种 Vector、Quaternion、Matrix、FboSettings、DragInfo 等
-- 其余 3D/图形辅助类
+硬件相关能力已经实现：`VideoGrabber`（原生 NativeImage 表面 + ArkTS `@kit.CameraKit` 桥接）、
+`Serial`/`Arduino`（POSIX 串口 + Firmata 子集）、`SoundDevice` 枚举。这些能力需要
+真机摄像头或串口硬件才能完成最终验证。
 
 完整清单见 `docs/API_COVERAGE.md`。
 

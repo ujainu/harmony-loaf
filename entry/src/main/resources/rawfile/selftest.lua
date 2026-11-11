@@ -265,10 +265,10 @@ check("path draw", pathPixel.g > 80 and pathPixel.r < 80,
 	string.format("%.0f,%.0f,%.0f", pathPixel.r, pathPixel.g, pathPixel.b))
 
 -- compatibility surface for classes that are not implemented natively
-check("compat class", of.VideoGrabber ~= nil and of.HttpRequest ~= nil)
-local grabberStub = of.VideoGrabber()
-check("compat ctor", type(grabberStub) == "table")
-check("compat method", grabberStub:draw(0, 0) ~= nil)
+check("compat class", of["3dPrimitive"] ~= nil)
+local compatPrimitive = of["3dPrimitive"]()
+check("compat ctor", type(compatPrimitive) == "table")
+check("compat method", compatPrimitive:draw() ~= nil)
 check("compat free fn", type(of.getSystemTimeMillis()) == "number")
 
 -- misc classes
@@ -457,6 +457,14 @@ document:setAttribute("version", "1")
 check("xml save", of.Xml.save(document, "selftest.xml"))
 local reloaded = of.Xml.load("selftest.xml")
 check("xml reload", reloaded:getAttribute("version") == "1" and reloaded:getName() == "config")
+
+-- hardware bindings (no device attached here, so only the API paths are checked)
+check("sound device list", type(of.getSoundDeviceList()) == "table")
+check("serial device list", type(of.getSerialDeviceList()) == "table")
+local serial = of.Serial()
+check("serial missing port", not serial:setup("/dev/ttyNOPE0", 9600))
+local arduino = of.Arduino()
+check("arduino missing port", not arduino:setup("/dev/ttyNOPE0", 57600))
 
 print(string.format("SELFTEST %d passed, %d failed", pass, fail))
 

@@ -2,11 +2,13 @@
 
 - 官方类：**105**
 - 官方包装函数：**5354**
-- 已实现：**91** 类
-- 兼容桩：**14** 类 + 425 个自由函数
+- 已实现（原生或等价）：**102** 类
+- 兼容桩：**3** 类 + 425 个自由函数
 
 ## 已实现
 
+- `Arduino`
+- `ArduinoSupportedPinTypesMap`
 - `BaseSoundPlayer`
 - `BaseSoundStream`
 - `BoundingBox`
@@ -31,6 +33,10 @@
 - `File`
 - `FileDialogResult`
 - `FilePath`
+- `Firmata_Encoder_Data`
+- `Firmata_I2C_Data`
+- `Firmata_Serial_Data`
+- `Firmata_Stepper_Data`
 - `FloatColor`
 - `FloatImage`
 - `FloatPixels`
@@ -65,10 +71,13 @@
 - `ScopedMatrix`
 - `ScopedMatrixStyle`
 - `ScopedStyle`
+- `Serial`
+- `SerialDeviceInfo`
 - `Shader`
 - `Shadow`
 - `ShortImage`
 - `ShortPixels`
+- `SoundDevice`
 - `SoundDeviceVector`
 - `SoundPlayer`
 - `SoundStream`
@@ -95,31 +104,19 @@
 - `VideoDevice`
 - `VideoDeviceVector`
 - `VideoFormat`
+- `VideoGrabber`
 - `VideoPlayer`
 - `WindowSettings`
 - `Xml`
+- `supportedPinTypes`
 
 ## 兼容桩
 
-- `3dPrimitive`
-- `Arduino`
-- `ArduinoSupportedPinTypesMap`
-- `Firmata_Encoder_Data`
-- `Firmata_I2C_Data`
-- `Firmata_Serial_Data`
-- `Firmata_Stepper_Data`
-- `Serial`
-- `SerialDeviceInfo`
-- `SoundDevice`
-- `VideoGrabber`
-- `path`
-- `string`
-- `supportedPinTypes`
+- `3dPrimitive`：基类，Lua 中无有效标识符，具体图元已实现
+- `path` / `string`：SWIG 为 std::string / std::filesystem::path 生成的内部代理类型
 
 ## 说明
 
-- 未实现的 14 个类全部是硬件/设备集成或 SWIG 内部类型
-- VideoGrabber 需要 ArkTS 侧创建 Camera_Manager 并传入，配合摄像头权限与真机
-- Arduino/Firmata/Serial 需要真实串口硬件；SoundDevice 需要音频设备枚举接口
-- HttpRequest/HttpResponse 官方绑定只有 getId()，已按官方表面实现
-- 其余类均有真实语义（原生 C++ 或 Lua 实现）
+- 硬件相关能力已实现：`VideoGrabber`（ArkTS 相机桥 + NativeImage 外部纹理）、`Serial`、`Arduino`（Firmata 子集）、`SoundDevice` 枚举
+- 这些能力需要真机摄像头/串口硬件才能完成最终验证
+- `HttpRequest`/`HttpResponse` 官方绑定只有 `getId()`，已按官方表面实现

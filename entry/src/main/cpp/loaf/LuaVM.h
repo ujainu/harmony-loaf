@@ -31,6 +31,7 @@ public:
 	bool callString(const char *name, const std::string &value);
 	bool callFiles(const char *name, const std::vector<std::string> &files);
 	bool callAudioOut(SoundStream &stream);
+	void pollHardware();
 	bool hasFunction(const char *name);
 	bool callOsc(const struct OscMessage &message);
 

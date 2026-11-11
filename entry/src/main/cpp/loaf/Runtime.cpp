@@ -531,6 +531,7 @@ void Runtime::loop() {
 					lua.callString("gotMessage", message);
 				}
 			}
+			lua.pollHardware();
 			pumpOsc();
 			watchScript();
 			if(!lua.error().empty()) {

@@ -37,7 +37,7 @@ harmony-loaf/
 │   ├── src/main/ets/             # ArkUI 壳层（工具栏、文件选择）
 │   └── src/main/resources/
 │       ├── rawfile/examples/     # loaf 官方示例
-│       └── rawfile/selftest.lua  # 128 项自测
+│       └── rawfile/selftest.lua  # 132 项自测
 ├── docs/                         # 使用文档与 API 覆盖
 └── README.md                     # 项目总览
 ```
@@ -220,13 +220,14 @@ IcoSphere 图元、`of.CubeMap` 天空盒。光照是单方向光的简化模型
 | launcher 脚本 | 能用 | 点击卡片通过 `/loaf/load` 切换示例 |
 | 导出脚本 | 能用 | 系统保存对话框导出到桌面/文档 |
 | 适配缩放 | 能用 | 锁定逻辑尺寸，窗口变化时等比缩放 |
-| 自测 | 能用 | 128 项断言全部通过 |
-| 摄像头（VideoGrabber） | 未适配 | 原生 `ohcamera` 的 `Camera_Manager` 需由 ArkTS 创建并传入，且需要真机权限 |
-| Arduino / Firmata / Serial | 未适配 | 依赖真实串口硬件 |
+| 自测 | 能用 | 132 项断言全部通过 |
+| 摄像头（VideoGrabber） | 部分能用 | 原生创建 NativeImage 表面，ArkTS 侧用 `@kit.CameraKit` 启动预览；需要摄像头权限与真机 |
+| Arduino / Firmata / Serial | 部分能用 | 已实现 POSIX 串口、Firmata 数字/模拟/PWM 与回调；需要真实串口硬件验证 |
+| SoundDevice 枚举 | 能用 | 通过 OHAudio RoutingManager 列出输入/输出设备 |
 | addons | 未适配 | 官方 loaf 本身也只带 ofxLua/ofxOsc/ofxSyphon |
 
-**小结**：T2 里真正受平台限制的是摄像头、串口和 Syphon 的二进制兼容；
-其余增强能力（3D、实时音频、帧服务、XML、导出、缩放）都已经落地。
+**小结**：T2 的软件侧能力都已落地；摄像头、串口、视频解码需要真机硬件才能完成
+最终验证，Syphon 仍只能功能等价。
 
 ---
 
@@ -237,11 +238,12 @@ IcoSphere 图元、`of.CubeMap` 天空盒。光照是单方向光的简化模型
 - **T0**：构建、安装、启动、脚本、热重载全部到位，**100%**。
 - **T1**：绘图、字体、图片、FBO、着色器、OSC、音频、输入、导入、示例都跑通，
   **约 95%**（差值主要是 openFrameworks 个别绘图函数的细节差异）。
-- **T2**：3D/实时音频/帧服务/XML/导出/缩放可用，摄像头与串口未适配，
-  **约 70%**——差距集中在依赖外部硬件的部分。
+- **T2**：12 项里 11 项已实现（3D、实时音频、视频、帧服务、XML、launcher、
+  导出、缩放、自测、摄像头、串口/Firmata），**约 90%**；剩余的验证受真机
+  硬件限制，addons 不在官方 loaf 范围内。
 
-官方绑定的 105 个类中，**91 个有真实语义**；剩余 14 个是硬件/设备类或
-SWIG 内部类型，清单在 `docs/API_COVERAGE.md`。自测 128 项全部通过，
+官方绑定的 105 个类中，**102 个有真实语义**；剩余 3 个是 SWIG 内部类型
+（`path`/`string`）和一个无 Lua 名字的基类，清单在 `docs/API_COVERAGE.md`。自测 132 项全部通过，
 覆盖渲染、FBO、着色器、字体、音频、3D、OSC、文件、帧服务与兼容层。
 
 **一句话总结**：loaf 的核心工作流——写脚本、保存、立刻看到画面、用 OSC

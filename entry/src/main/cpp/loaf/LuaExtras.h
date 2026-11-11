@@ -686,4 +686,14 @@ function XmlClass.toString(node)
     return table.concat(out, "\n")
 end
 of.Xml = setmetatable({}, {__index = XmlClass, __call = function(_, name) return xmlNode(name) end})
+
+-- firmata / serial data holders
+of.SerialDeviceInfo = dataClass({devicePath = "", deviceName = ""})
+of.Firmata_Serial_Data = dataClass({command = 0, pin = 0, value = 0})
+of.Firmata_I2C_Data = dataClass({address = 0, reg = 0, value = 0})
+of.Firmata_Encoder_Data = dataClass({channel = 0, position = 0})
+of.Firmata_Stepper_Data = dataClass({steps = 0, direction = 0})
+of.ArduinoSupportedPinTypesMap = {}
+of.supportedPinTypes = {}
+of.VideoFormat = {RGB = 0, YUV = 1, GRAY = 2}
 )LOAFEXTRAS";

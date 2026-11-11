@@ -9,6 +9,8 @@
 #include "BindingsGfx2.h"
 #include "BindingsAudioStream.h"
 #include "BindingsGfx3.h"
+#include "BindingsHardware.h"
+#include "BindingsCamera.h"
 #include "LuaVM.h"
 
 #include <lua.hpp>
@@ -1494,6 +1496,8 @@ void registerOfBindings(lua_State *L) {
 	registerMiscBindings(L, table);
 	registerAudioStreamBindings(L, table);
 	registerGfx3Bindings(L, table);
+	registerHardwareBindings(L, table);
+	registerCameraBindings(L, table);
 	lua_setglobal(L, "of");
 }
 

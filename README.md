@@ -23,7 +23,7 @@
 | --- | --- | --- |
 | **T0 基础能力** | 构建 HAP、安装启动、画布渲染、脚本加载、热重载、错误处理 | 完成（100%） |
 | **T1 主要能力** | 2D 绘图、字体、图片、FBO、着色器、OSC、音频播放、鼠标键盘、拖拽导入、官方示例 | 可用（约 95%） |
-| **T2 增强能力** | 3D、实时音频、视频、帧服务、XML、launcher、导出、适配缩放、自测；摄像头/串口未适配 | 部分可用（约 70%） |
+| **T2 增强能力** | 3D、实时音频、视频、帧服务、XML、launcher、导出、适配缩放、自测、摄像头桥接、串口/Firmata | 可用（约 90%，硬件相关需真机验证） |
 
 完整的适配过程、编译运行步骤与逐项状态见
 [README.OpenHarmony_CN.md](README.OpenHarmony_CN.md)。
@@ -177,8 +177,8 @@ distSquared toString toInt toFloat degToRad radToDeg sendMessage` 与
 
 ## API 覆盖
 
-对照官方 ofxLua 绑定（105 个类、约 5354 个包装函数）：**91 个类为原生/等价实现**，
-其余 14 个类为硬件/设备类或 SWIG 内部类型，由 `CompatStubs.h` 安装为兼容桩——
+对照官方 ofxLua 绑定（105 个类、约 5354 个包装函数）：**102 个类为原生/等价实现**，
+其余 3 个类为 SWIG 内部类型或无 Lua 名字的基类，由 `CompatStubs.h` 安装为兼容桩——
 类名、方法名与官方一致，调用不会因 nil 中断，但返回默认值。
 
 逐类状态见 [docs/API_COVERAGE.md](docs/API_COVERAGE.md)。

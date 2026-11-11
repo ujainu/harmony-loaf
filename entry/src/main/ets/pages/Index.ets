@@ -2,6 +2,7 @@ import { common } from '@kit.AbilityKit';
 import { display } from '@kit.ArkUI';
 import { window } from '@kit.ArkUI';
 import { KeyCode } from '@kit.InputKit';
+import { CameraBridge } from '../loaf/CameraBridge';
 import { unifiedDataChannel } from '@kit.ArkData';
 import loafcore, { LoafEvent, LoafInfo } from 'libloafcore.so';
 
@@ -36,8 +37,13 @@ struct Index {
       console.error('loaf: could not read display density', JSON.stringify(err));
     }
 
-    loafcore.onEvent((event: LoafEvent) => {
-      this.handleEvent(event);
+    loafcore.onEvent((raw: string) => {
+      try {
+        const event = JSON.parse(raw) as LoafEvent;
+        this.handleEvent(event);
+      } catch (err) {
+        console.error('loaf: bad event', raw);
+      }
     });
 
     this.infoTimer = setInterval(() => {
@@ -88,6 +94,18 @@ struct Index {
       this.status = event.message;
     } else if (event.type === 'ready') {
       this.status = '运行时就绪';
+    } else if (event.type === 'camera') {
+      if (event.action === 'start' && event.surfaceId) {
+        CameraBridge.start(this.context, event.surfaceId, event.width ?? 640, event.height ?? 480)
+          .then((error: string) => {
+            console.info(`loaf: camera start result "${error}"`);
+            if (error.length > 0) {
+              this.errorText = error;
+            }
+          });
+      } else if (event.action === 'stop') {
+        CameraBridge.stop();
+      }
     }
   }
 

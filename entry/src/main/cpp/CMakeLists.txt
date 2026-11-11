@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LOAF_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
-# note: re-run cmake when adding new source files (CMake GLOB is configure-time)     
+# note: re-run cmake when adding new source files (CMake GLOB is configure-time)       
 file(GLOB LOAF_SOURCES
     ${LOAF_ROOT}/*.cpp
     ${LOAF_ROOT}/loaf/*.cpp

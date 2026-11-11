@@ -15,6 +15,20 @@ OpenHarmony / HarmonyOS PC 的全过程：工程怎么组织、代码改了哪�
 
 ---
 
+## 迁移能力总览
+
+按照鸿蒙 PC 适配规范，能力分为 T0 / T1 / T2 三档：
+
+| 阶段 | 范围 | 状态 |
+| --- | --- | --- |
+| **T0 基础能力** | 构建 HAP、安装启动、画布渲染、脚本加载、热重载、错误处理 | 完成（100%） |
+| **T1 主要能力** | 2D 绘图、字体、图片、FBO、着色器、OSC、音频播放、输入、拖拽导入、官方示例 | 可用（约 95%） |
+| **T2 增强能力** | 3D、实时音频、视频、帧服务、XML、launcher、导出、缩放、自测、摄像头、串口/Firmata | 可用（约 90%，硬件相关需真机验证） |
+
+逐项状态见下文表格，类级清单见 `docs/API_COVERAGE.md`。
+
+---
+
 ## 工程结构
 
 ```text
@@ -32,9 +46,11 @@ harmony-loaf/
 │   │   │   ├── Audio.*           # OHAudio 输出与 WAV 解码
 │   │   │   ├── AudioStream.*     # ofSoundStream 回调
 │   │   │   ├── Video.*           # AVPlayer + NativeImage
+│   │   │   ├── BindingsHardware.cpp  # Serial / Arduino(Firmata) / SoundDevice
+│   │   │   ├── BindingsCamera.cpp    # ofVideoGrabber 的 NativeImage 表面
 │   │   │   └── FrameServer.*     # Syphon 等价的 TCP 帧服务
 │   │   └── third_party/          # Lua 5.4、stb_image
-│   ├── src/main/ets/             # ArkUI 壳层（工具栏、文件选择）
+│   ├── src/main/ets/             # ArkUI 壳层（工具栏、文件选择、CameraBridge）
 │   └── src/main/resources/
 │       ├── rawfile/examples/     # loaf 官方示例
 │       └── rawfile/selftest.lua  # 132 项自测
@@ -158,6 +174,20 @@ IcoSphere 图元、`of.CubeMap` 天空盒。光照是单方向光的简化模型
 `Message/Bundle/Sender/Receiver/ParameterSync`。Syphon 没有鸿蒙对应实现，
 改为 TCP 帧服务，协议为 `"LOAF" | 宽 | 高 | 序号 | 字节数 | RGBA`。
 
+**串口与 Firmata**。`ofSerial` 直接使用 POSIX `termios`（1200–230400 波特率，
+非阻塞读写）；`ofArduino` 实现 Firmata 子集：引脚模式、数字输出、PWM、
+模拟/数字上报，以及在渲染线程轮询解析后回调 `digitalPinChanged` /
+`analogPinChanged`。设备列表通过扫描 `/dev/ttyUSB*`、`/dev/ttyACM*`、
+`/dev/ttyS*` 得到。
+
+**摄像头**。原生侧创建 `OH_NativeImage` 作为 GL 外部纹理，并把它的 surfaceId
+通过事件发给 ArkTS；ArkTS 用 `@kit.CameraKit` 选择摄像头、匹配预览分辨率、
+创建 `PreviewOutput` 并启动会话。画面回到原生侧后直接绘制进画布，可以和其它
+图形混合。需要 `ohos.permission.CAMERA` 与真机摄像头。
+
+**音频设备枚举**。`of.getSoundDeviceList()` 通过 OHAudio RoutingManager 列出
+当前输入/输出设备，返回 `of.SoundDevice` 列表（名称、ID、类型）。
+
 **兼容层**。官方 ofxLua 绑定有 105 个类、约 5354 个包装函数。未能真实实现的
 类被安装为类型化桩，保证脚本不会因为缺类直接中断，同时把缺口公开在
 `docs/API_COVERAGE.md` 中。
@@ -208,6 +238,45 @@ IcoSphere 图元、`of.CubeMap` 天空盒。光照是单方向光的简化模型
 **小结**：T1 基本齐全。纯计算与绘图类能力稳定；输入和文件导入这类要跨系统
 边界的功能也实际验证过。
 
+### 硬件能力用法
+
+串口与 Arduino（需要真实串口硬件）：
+
+```lua
+local arduino = of.Arduino()
+arduino:setup("/dev/ttyUSB0", 57600)
+arduino:sendDigitalPinMode(13, of.OUTPUT)
+arduino:sendDigitalPin(13, 1)
+arduino:reportAnalogPin(0, true)
+
+function analogPinChanged(pin, value)
+	print("A" .. pin, value)
+end
+```
+
+摄像头（需要摄像头权限与真机）：
+
+```lua
+local camera
+
+function setup()
+	camera = of.VideoGrabber()
+	camera:setup(640, 480)
+end
+
+function draw()
+	camera:draw(0, 0, 640, 480)
+end
+```
+
+音频设备枚举：
+
+```lua
+for _, device in ipairs(of.getSoundDeviceList()) do
+	print(device:getDeviceName(), device:getDeviceID())
+end
+```
+
 ### T2 增强能力（桌面端加分项）
 
 | 能力 | 状态 | 说明 |
@@ -238,9 +307,8 @@ IcoSphere 图元、`of.CubeMap` 天空盒。光照是单方向光的简化模型
 - **T0**：构建、安装、启动、脚本、热重载全部到位，**100%**。
 - **T1**：绘图、字体、图片、FBO、着色器、OSC、音频、输入、导入、示例都跑通，
   **约 95%**（差值主要是 openFrameworks 个别绘图函数的细节差异）。
-- **T2**：12 项里 11 项已实现（3D、实时音频、视频、帧服务、XML、launcher、
-  导出、缩放、自测、摄像头、串口/Firmata），**约 90%**；剩余的验证受真机
-  硬件限制，addons 不在官方 loaf 范围内。
+- **T2**：13 项里 12 项已实现（8 项完整可用，3D/视频/Syphon/摄像头/串口
+  4 项需真机或协议限制），addons 不在官方 loaf 范围内，**约 90%**。
 
 官方绑定的 105 个类中，**102 个有真实语义**；剩余 3 个是 SWIG 内部类型
 （`path`/`string`）和一个无 Lua 名字的基类，清单在 `docs/API_COVERAGE.md`。自测 132 项全部通过，

@@ -1484,6 +1484,13 @@ void registerOfBindings(lua_State *L) {
 	setNumber(L, "POLY_WINDING_NONZERO", 2, table);
 	setNumber(L, "POLY_WINDING_ABS_GEQ_TWO", 3, table);
 	setNumber(L, "IMAGE_GRAYSCALE", 1, table);
+	setNumber(L, "INPUT", 0, table);
+	setNumber(L, "OUTPUT", 1, table);
+	setNumber(L, "ANALOG", 2, table);
+	setNumber(L, "PWM", 3, table);
+	setNumber(L, "SERVO", 4, table);
+	setNumber(L, "LOW", 0, table);
+	setNumber(L, "HIGH", 1, table);
 	lua_pushboolean(L, 1);
 	lua_setfield(L, table, "CLOSE");
 
